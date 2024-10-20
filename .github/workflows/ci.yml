@@ -1,20 +1,13 @@
-name: Node.js CI/CD Pipeline
+name: CI/CD Pipeline
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
     branches:
       - main
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [14.x, 16.x]  # Test on Node.js versions 14.x and 16.x
 
     steps:
       - name: Checkout code
@@ -23,7 +16,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '14'
 
       - name: Install dependencies
         run: npm install
@@ -31,5 +24,16 @@ jobs:
       - name: Run tests
         run: npm test
 
-      - name: Build the application
-        run: npm run build
+      - name: Build Docker image
+        run: docker build -t username/weather-app:${{ github.sha }} .
+
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Push Docker image to Docker Hub
+        run: docker push username/weather-app:${{ github.sha }}
+
+      - name: Deploy to Kubernetes
+        run: kubectl apply -f k8s/deployment.yml
+        env:
+          KUBECONFIG: ${{ secrets.KUBECONFIG }}  # Kubernetes config for the environment
