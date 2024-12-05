@@ -1,0 +1,6 @@
+Deployment successfully updated.
+Version 1 on Oct 9, 2024, 5:45 AM
+Deployment ID
+AKfycbyAuBaaJw2CqqTNIfluhhrlDBRGEI5l1ClRYj_4_ZDZYTl7kdjsje_7ud4S-ec2LxAqEQ
+Web app
+https://script.google.com/macros/s/AKfycbyAuBaaJw2CqqTNIfluhhrlDBRGEI5l1ClRYj_4_ZDZYTl7kdjsje_7ud4S-ec2LxAqEQ/exec
