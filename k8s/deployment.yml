@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-app  # Name of your deployment
+  labels:
+    app: weather-app  # Label for your application
+spec:
+  replicas: 2  # Number of pod replicas
+  selector:
+    matchLabels:
+      app: weather-app  # Must match the labels defined above
+  template:
+    metadata:
+      labels:
+        app: weather-app  # Labels for the pod
+    spec:
+      containers:
+      - name: weather-app
+        image: username/micro-wather-data:latest  # Replace with your image name
+        ports:
+        - containerPort: 3000  # Port your app listens on
+        env:
+        - name: MONGODB_URI  # Example of an environment variable
+          valueFrom:
+            secretKeyRef:
+              name: mongodb-uri-secret  # Replace with your secret name
+              key: uri  # Key within the secret
